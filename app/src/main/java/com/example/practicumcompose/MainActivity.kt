@@ -1,10 +1,14 @@
 package com.example.practicumcompose
 
+import android.content.Context
 import android.os.Bundle
+import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -12,6 +16,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 
 class MainActivity : ComponentActivity() {
@@ -25,6 +30,9 @@ class MainActivity : ComponentActivity() {
 
     @Composable
     private fun SayHello() {
+
+        val context = LocalContext.current
+
         Text(
             text = "Hello",
             modifier = Modifier
@@ -36,7 +44,16 @@ class MainActivity : ComponentActivity() {
                     shape = RoundedCornerShape(12.dp)
                 )
                 .padding(12.dp)
+
+                .fillMaxSize() // растянуть на всю ширину
+                .clickable {
+                    context.showToast("Клик сделан")
+                }
         )
+    }
+
+    fun Context.showToast(message: String, duration: Int = Toast.LENGTH_SHORT) {
+        Toast.makeText(this, message, duration).show()
     }
 }
 
