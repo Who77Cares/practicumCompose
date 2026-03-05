@@ -127,12 +127,12 @@ class MainActivity : ComponentActivity() {
                 )
         ) {
             Row(
-                horizontalArrangement = Arrangement.End,
+                horizontalArrangement = Arrangement.SpaceBetween,
                 modifier = Modifier
                     .background(
                         color = Color(0xFFFF9C2B)
                     )
-                    .fillMaxWidth()
+                    .fillMaxWidth(0.7f)
             ) {
                 SayHello()
                 SayHello()
