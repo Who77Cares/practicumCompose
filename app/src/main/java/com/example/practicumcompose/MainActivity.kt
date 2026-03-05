@@ -117,7 +117,7 @@ class MainActivity : ComponentActivity() {
     @Composable
     private fun PositionLesson() {
         Column(
-            verticalArrangement = Arrangement.Center,
+            verticalArrangement = Arrangement.SpaceEvenly,
             horizontalAlignment = Alignment.End,
             modifier = Modifier
                 .systemBarsPadding()
@@ -126,11 +126,31 @@ class MainActivity : ComponentActivity() {
                     color = Color(0xFFF696FF)
                 )
         ) {
-            SayHello()
-            SayHello()
-            SayHello()
+            Row(
+                horizontalArrangement = Arrangement.End,
+                modifier = Modifier
+                    .background(
+                        color = Color(0xFFFF9C2B)
+                    )
+                    .fillMaxWidth()
+            ) {
+                SayHello()
+                SayHello()
+                SayHello()
+            }
+
+            Row() {
+                SayHello()
+                SayHello()
+                SayHello()
+            }
+
+            Row() {
+                SayHello()
+                SayHello()
+                SayHello()
+            }
         }
     }
-
 }
 
