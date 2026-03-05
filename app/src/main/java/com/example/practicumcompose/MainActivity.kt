@@ -8,9 +8,14 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.systemBarsPadding
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -20,7 +25,9 @@ import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shadow
@@ -37,7 +44,7 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
-            SayHello()
+            PositionLesson()
         }
     }
 
@@ -46,27 +53,23 @@ class MainActivity : ComponentActivity() {
 
         val context = LocalContext.current
 
-        var text by remember { mutableStateOf("Hello") }
+        var text by remember { mutableStateOf("1") }
         val lastLineCount = remember { mutableIntStateOf(0) }
 
         LaunchedEffect(Unit) {
             delay(5000)
-            text = "Very long text with many different lines and styles"
+            text = "2"
         }
 
         Text(
             text = text,
             modifier = Modifier
-                .fillMaxSize() // растянуть на всю ширину
                 .padding(16.dp)
-                .systemBarsPadding() // 👈 ВАЖНО! Добавляет отступы для статус бара и навигации если ставим enableEdgeToEdge()
                 .background(
                     color = Color(0xFFE1F5FE),
                     shape = RoundedCornerShape(12.dp)
                 )
                 .padding(12.dp)
-//                .wrapContentSize(align = Alignment.Center)
-
                 .clickable {
                     context.showToast("Клик сделан")
                 },
@@ -107,9 +110,27 @@ class MainActivity : ComponentActivity() {
             )
         )
     }
-
     fun Context.showToast(message: String, duration: Int = Toast.LENGTH_SHORT) {
         Toast.makeText(this, message, duration).show()
     }
+
+    @Composable
+    private fun PositionLesson() {
+        Column(
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.End,
+            modifier = Modifier
+                .systemBarsPadding()
+                .fillMaxSize()
+                .background(
+                    color = Color(0xFFF696FF)
+                )
+        ) {
+            SayHello()
+            SayHello()
+            SayHello()
+        }
+    }
+
 }
 
