@@ -32,6 +32,9 @@ import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.systemBarsPadding
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -73,7 +76,7 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
-            StateLesson()
+            ListItemsLesson()
         }
     }
 
@@ -381,7 +384,7 @@ class MainActivity : ComponentActivity() {
             modifier = Modifier
                 .padding(44.dp)
                 .clickable {
-                    when(++counter.value) {
+                    when (++counter.value) {
                         10 -> backgroundColor.value = Color.Red
                         20 -> backgroundColor.value = Color.Green
                     }
@@ -389,6 +392,26 @@ class MainActivity : ComponentActivity() {
                 .background(color = backgroundColor.value),
             text = counter.value.toString()
         )
+    }
+
+    @Composable
+    private fun ListItemsLesson() {
+        LazyRow(
+            verticalAlignment = Alignment.CenterVertically,
+            modifier = Modifier.fillMaxSize()
+        ) {
+
+            itemsIndexed(
+                listOf<String>("item 1", "item2", "item 923")
+            ) { index, item ->
+                Text(
+                    text = "$item $index",
+                    modifier = Modifier.padding(vertical = 10.dp)
+                )
+            }
+
+
+        }
     }
 }
 
