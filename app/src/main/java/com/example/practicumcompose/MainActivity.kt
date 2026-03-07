@@ -32,6 +32,9 @@ import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.systemBarsPadding
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -65,7 +68,13 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.practicumcompose.ui_theme.Purple200
+import com.example.practicumcompose.ui_theme.Purple500
+import com.example.practicumcompose.ui_theme.Teal200
+import com.example.practicumcompose.ui_theme.Teal700
+import com.example.practicumcompose.ui_theme.White
 import kotlinx.coroutines.delay
+import kotlin.math.max
 import kotlin.math.roundToInt
 
 class MainActivity : ComponentActivity() {
@@ -73,7 +82,7 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
-            StateLesson()
+            ListItemsLesson()
         }
     }
 
@@ -381,7 +390,7 @@ class MainActivity : ComponentActivity() {
             modifier = Modifier
                 .padding(44.dp)
                 .clickable {
-                    when(++counter.value) {
+                    when (++counter.value) {
                         10 -> backgroundColor.value = Color.Red
                         20 -> backgroundColor.value = Color.Green
                     }
@@ -389,6 +398,43 @@ class MainActivity : ComponentActivity() {
                 .background(color = backgroundColor.value),
             text = counter.value.toString()
         )
+    }
+
+    @Composable
+    private fun ListItemsLesson() {
+        val itemsList = List(30) { index -> "item sdpoijf ojweiosjf klsdmf oipjmfi m43982ij mfklsd mf9-834m flk34jn-98f jklesjf9834 jkl34ju f-89j34k fj3948j fk34f 9-83j4fk j349p8 fk3l4j f9-834jf ko349-8f 3k4f89i34f kj9i034uj fi934f ${index + 1}" }
+
+        LazyColumn(
+            modifier = Modifier.fillMaxSize()
+        ) {
+            itemsIndexed(itemsList) { index, item ->
+                ExpandableListItem(item = item, index = index)
+            }
+        }
+    }
+
+    @Composable
+    fun ExpandableListItem(item: String, index: Int) {
+        // У КАЖДОГО элемента СВОЕ состояние!
+        var isExpanded by remember { mutableStateOf(false) }
+
+        Row(
+            horizontalArrangement = Arrangement.SpaceBetween,
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(10.dp)
+                .background(Purple200)
+        ) {
+            Text(
+                text = "$item $index",
+                modifier = Modifier
+                    .background(Teal200)
+                    .clickable {
+                        isExpanded = !isExpanded  // Меняет только этот элемент
+                    },
+                maxLines = if (isExpanded) 10 else 1
+            )
+        }
     }
 }
 
