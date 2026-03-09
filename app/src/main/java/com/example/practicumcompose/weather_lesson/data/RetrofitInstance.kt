@@ -23,7 +23,7 @@ object RetrofitInstance {
         retrofit.create(WeatherApi::class.java)
     }
 
-    suspend fun getWeatherApi(city: String): Double? {
+    suspend fun getWeatherApi(city: String): Pair<Double, String>? {
         return withContext(Dispatchers.IO) {
             try {
                 val response = weatherApi.getCurrentWeather(
@@ -32,8 +32,11 @@ object RetrofitInstance {
                 ).execute()
 
                 if (response.isSuccessful) {
-                    Log.d("--", "${response.body()?.current?.condition?.icon}")
-                    response.body()?.current?.temp_c
+                    Pair<Double, String>(
+                        first = response.body()?.current?.temp_c ?: 0.0,
+                        second = response.body()?.current?.condition?.icon ?: ""
+                    )
+
                 } else {
                     null
                 }
