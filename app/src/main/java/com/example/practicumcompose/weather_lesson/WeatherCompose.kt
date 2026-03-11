@@ -53,17 +53,27 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 @Composable
-fun WeatherTabLayoutLesson(cityName: String) {
+fun WeatherTabLayoutLesson() {
 
     val dialogIsShown = remember { mutableStateOf(false) }
 
+    val cityName = remember { mutableStateOf("Izhevsk") }
+
     Column {
-        WeatherApiScreen(cityName, onIconButtonClick =  {
-            dialogIsShown.value = true
-        })
+        WeatherApiScreen(
+            cityName.value,
+            onIconButtonClick = {
+                dialogIsShown.value = true
+            }
+        )
         TabLayout()
 
-        if (dialogIsShown.value) DialogScreen(dialogIsShown)
+        if (dialogIsShown.value) DialogScreen(
+            dialogIsShown,
+            getTextFieldValue = {
+                cityName.value = it
+            }
+        )
     }
 }
 
@@ -225,7 +235,7 @@ fun TabLayout() {
 
 
 @Composable
-fun DialogScreen(dialogIsShown: MutableState<Boolean>) {
+fun DialogScreen(dialogIsShown: MutableState<Boolean>, getTextFieldValue: (String) -> Unit) {
 
     val dialogText = remember { mutableStateOf("") }
 
@@ -241,7 +251,10 @@ fun DialogScreen(dialogIsShown: MutableState<Boolean>) {
         },
         confirmButton = {
             TextButton(
-                onClick = { dialogIsShown.value = false }
+                onClick = {
+                    getTextFieldValue(dialogText.value)
+                    dialogIsShown.value = false
+                }
             ) {
                 Text("YES!")
             }
