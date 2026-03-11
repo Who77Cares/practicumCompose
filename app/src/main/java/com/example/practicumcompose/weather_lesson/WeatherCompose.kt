@@ -1,7 +1,6 @@
 package com.example.practicumcompose.weather_lesson
 
-import android.annotation.SuppressLint
-import android.content.Context
+
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
@@ -16,6 +15,8 @@ import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.AlertDialog
+import androidx.compose.material.TextButton
 import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
@@ -26,6 +27,7 @@ import androidx.compose.material3.TabRowDefaults
 import androidx.compose.material3.TabRowDefaults.tabIndicatorOffset
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableDoubleStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -35,13 +37,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import com.example.practicumcompose.R
-import com.example.practicumcompose.showToast
 import com.example.practicumcompose.ui_theme.Purple700
 import com.example.practicumcompose.weather_lesson.data.RetrofitInstance
 import kotlinx.coroutines.launch
@@ -49,14 +49,15 @@ import kotlinx.coroutines.launch
 @Composable
 fun WeatherTabLayoutLesson(cityName: String) {
 
-    // для реализации слушателя - просто выводим тост
-    val context = LocalContext.current
+    val dialogIsShown = remember { mutableStateOf(false) }
 
     Column {
         WeatherApiScreen(cityName, onIconButtonClick =  {
-            context.showToast("Icon button clicked")
+            dialogIsShown.value = true
         })
         TabLayout()
+
+        if (dialogIsShown.value) DialogScreen(dialogIsShown)
     }
 }
 
@@ -73,8 +74,6 @@ fun WeatherApiScreen(cityName: String, onIconButtonClick: () -> Unit) {
     // это корутина (контейнер), которая выполняет задачу (suspend функцию)
     // scope - это контейнер, в котором живут корутины
     val coroutineScope = rememberCoroutineScope()
-
-
 
     Box(
         modifier = Modifier
@@ -216,3 +215,26 @@ fun TabLayout() {
     }
 }
 
+
+@Composable
+fun DialogScreen(dialogIsShown: MutableState<Boolean>) {
+    AlertDialog(
+        onDismissRequest = { // Срабатывает, когда пользователь пытается закрыть диалог не через кнопки: Нажатие вне области диалога
+            dialogIsShown.value = false
+        },
+        confirmButton = {
+            TextButton(
+                onClick = { dialogIsShown.value = false }
+            ) {
+                Text("YES!")
+            }
+        },
+        dismissButton = {
+            TextButton(
+                onClick = { dialogIsShown.value = false }
+            ) {
+                Text("NOOO")
+            }
+        }
+    )
+}
