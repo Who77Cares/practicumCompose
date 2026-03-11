@@ -1,9 +1,13 @@
 package com.example.practicumcompose.weather_lesson
 
+import android.annotation.SuppressLint
+import android.content.Context
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -14,6 +18,8 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.Tab
 import androidx.compose.material3.TabRow
 import androidx.compose.material3.TabRowDefaults
@@ -29,26 +35,34 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import com.example.practicumcompose.R
+import com.example.practicumcompose.showToast
 import com.example.practicumcompose.ui_theme.Purple700
 import com.example.practicumcompose.weather_lesson.data.RetrofitInstance
 import kotlinx.coroutines.launch
 
 @Composable
 fun WeatherTabLayoutLesson(cityName: String) {
+
+    // для реализации слушателя - просто выводим тост
+    val context = LocalContext.current
+
     Column {
-        WeatherApiScreen(cityName)
+        WeatherApiScreen(cityName, onIconButtonClick =  {
+            context.showToast("Icon button clicked")
+        })
         TabLayout()
     }
 }
 
 
 @Composable
-fun WeatherApiScreen(cityName: String) {
+fun WeatherApiScreen(cityName: String, onIconButtonClick: () -> Unit) {
 
     val apiTemp = remember { mutableDoubleStateOf(0.0) }
     val apiWeatherIcon = remember { mutableStateOf("") }
@@ -60,48 +74,53 @@ fun WeatherApiScreen(cityName: String) {
     // scope - это контейнер, в котором живут корутины
     val coroutineScope = rememberCoroutineScope()
 
-        Box(
-            modifier = Modifier
-                .fillMaxHeight(0.33f)
-                .fillMaxWidth()
-                .background(Color.Red),
-            contentAlignment = Alignment.Center
-        ) {
 
-            Column(
-                modifier = Modifier.background(Color.Cyan),
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-                Text(
-                    text = " Temp in $cityName = ${apiTemp.doubleValue} °C",
-                    fontSize = 30.sp
+
+    Box(
+        modifier = Modifier
+            .fillMaxHeight(0.33f)
+            .fillMaxWidth()
+            .background(Color.Red),
+        contentAlignment = Alignment.Center
+    ) {
+
+        Column(
+            modifier = Modifier.background(Color.Cyan),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Text(
+                text = " Temp in $cityName = ${apiTemp.doubleValue} °C",
+                fontSize = 30.sp
+            )
+
+            Box(contentAlignment = Alignment.Center) {
+                AsyncImage(
+                    model = apiWeatherIcon.value,
+                    contentDescription = "apiWeatherIcon",
+                    modifier = Modifier
+                        .size(64.dp)
+                        .alpha(if (isLoading.value) 0f else 1f) // прячем визуально, но не убираем
+                        .border(2.dp, Color.Blue, CircleShape),
+                    error = painterResource(id = R.drawable.image),
+                    placeholder = painterResource(id = R.drawable.image),
+                    onLoading = { isLoading.value = true },
+                    onSuccess = { isLoading.value = false },
+                    onError = { isLoading.value = false }
                 )
 
-                Box(contentAlignment = Alignment.Center) {
-                    AsyncImage(
-                        model = apiWeatherIcon.value,
-                        contentDescription = "apiWeatherIcon",
-                        modifier = Modifier
-                            .size(64.dp)
-                            .alpha(if (isLoading.value) 0f else 1f) // прячем визуально, но не убираем
-                            .border(2.dp, Color.Blue, CircleShape),
-                        error = painterResource(id = R.drawable.image),
-                        placeholder = painterResource(id = R.drawable.image),
-                        onLoading = { isLoading.value = true },
-                        onSuccess = { isLoading.value = false },
-                        onError = { isLoading.value = false }
+                if (isLoading.value) {
+                    CircularProgressIndicator(
+                        modifier = Modifier.size(32.dp),
+                        strokeWidth = 2.dp
                     )
-
-                    if (isLoading.value) {
-                        CircularProgressIndicator(
-                            modifier = Modifier.size(32.dp),
-                            strokeWidth = 2.dp
-                        )
-                    }
                 }
+            }
 
+            Row(modifier = Modifier.fillMaxWidth().padding(top = 10.dp),
+                horizontalArrangement = Arrangement.SpaceEvenly,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
                 Button(
-                    modifier = Modifier.padding(top = 15.dp),
                     onClick = {
                         coroutineScope.launch {
                             val retrofitResponse =
@@ -115,8 +134,21 @@ fun WeatherApiScreen(cityName: String) {
                 ) {
                     Text(text = "Refresh", modifier = Modifier.padding(10.dp))
                 }
+
+                IconButton(
+                    onClick = { onIconButtonClick.invoke() }
+                ) {
+                    Icon(
+                        painter = painterResource(R.drawable.favorite_icon),
+                        contentDescription = "icon",
+                        tint = Color.Red
+                    )
+                }
+
             }
+
         }
+    }
 }
 
 @Composable

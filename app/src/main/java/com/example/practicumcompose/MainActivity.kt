@@ -4,11 +4,9 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.compose.material.ListItem
-import com.example.practicumcompose.weather_lesson.WeatherApiScreen
 import com.example.practicumcompose.weather_lesson.WeatherTabLayoutLesson
 
-private val CITY_NAME_FOR_WEATHER_API = "Izhevsk"
+private const val CITY_NAME_FOR_WEATHER_API = "Izhevsk"
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
