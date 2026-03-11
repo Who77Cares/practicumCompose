@@ -1,6 +1,7 @@
 package com.example.practicumcompose.weather_lesson
 
 
+import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
@@ -17,6 +18,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.AlertDialog
 import androidx.compose.material.TextButton
+import androidx.compose.material.TextField
 import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
@@ -37,13 +39,17 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import com.example.practicumcompose.R
+import com.example.practicumcompose.showToast
 import com.example.practicumcompose.ui_theme.Purple700
 import com.example.practicumcompose.weather_lesson.data.RetrofitInstance
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 @Composable
@@ -115,7 +121,9 @@ fun WeatherApiScreen(cityName: String, onIconButtonClick: () -> Unit) {
                 }
             }
 
-            Row(modifier = Modifier.fillMaxWidth().padding(top = 10.dp),
+            Row(modifier = Modifier
+                .fillMaxWidth()
+                .padding(top = 10.dp),
                 horizontalArrangement = Arrangement.SpaceEvenly,
                 verticalAlignment = Alignment.CenterVertically
             ) {
@@ -218,8 +226,17 @@ fun TabLayout() {
 
 @Composable
 fun DialogScreen(dialogIsShown: MutableState<Boolean>) {
+
+    val dialogText = remember { mutableStateOf("") }
+
+    val context = LocalContext.current
+    val coroutineScope = rememberCoroutineScope()
+    // Сохраняем предыдущий таймер для отмены
+    val searchJob = remember { mutableStateOf<Job?>(null) }
+
     AlertDialog(
-        onDismissRequest = { // Срабатывает, когда пользователь пытается закрыть диалог не через кнопки: Нажатие вне области диалога
+        // Срабатывает, когда пользователь пытается закрыть диалог не через кнопки: Нажатие вне области диалога
+        onDismissRequest = {
             dialogIsShown.value = false
         },
         confirmButton = {
@@ -234,6 +251,22 @@ fun DialogScreen(dialogIsShown: MutableState<Boolean>) {
                 onClick = { dialogIsShown.value = false }
             ) {
                 Text("NOOO")
+            }
+        },
+        title = {
+            Column(modifier = Modifier.fillMaxWidth()) {
+                Text(text = "This is my title")
+                TextField(value = dialogText.value, onValueChange = { newValue ->
+                    dialogText.value = newValue
+
+                    // Отменяем предыдущий таймер
+                    searchJob.value?.cancel()
+
+                    searchJob.value = coroutineScope.launch {
+                        delay(4000)
+                        context.showToast(dialogText.value)
+                    }
+                })
             }
         }
     )
