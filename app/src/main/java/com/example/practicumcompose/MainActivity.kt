@@ -17,7 +17,7 @@ class MainActivity : ComponentActivity() {
 //            TabsTopBar()
 //            SearchTopBar()
 
-            AnimatedTopBar()
+      ScaffLesson()
         }
     }
 
