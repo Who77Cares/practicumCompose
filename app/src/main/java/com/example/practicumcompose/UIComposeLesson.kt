@@ -1,11 +1,14 @@
 package com.example.practicumcompose
 
 import android.annotation.SuppressLint
+import android.util.Log
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.material.ScrollableTabRow
 import androidx.compose.material.TopAppBar
@@ -20,8 +23,10 @@ import androidx.compose.material.rememberScaffoldState
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Snackbar
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
+import androidx.compose.material3.SnackbarResult
 import androidx.compose.material3.Tab
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -31,6 +36,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.launch
 
 
@@ -45,14 +51,27 @@ fun ScaffLesson() {
     val coroutineScope = rememberCoroutineScope()
     val snackbarHostState = remember { SnackbarHostState() }
 
-    Scaffold(snackbarHost = { SnackbarHost(snackbarHostState) },
+    Scaffold(
+        snackbarHost = {
+            SnackbarHost(snackbarHostState) { data ->
+                Snackbar(
+                    containerColor = Color.Blue,
+                    shape = RoundedCornerShape(60.dp),
+                    contentColor = Color.Green,
+                    snackbarData = data,
+                    modifier = Modifier
+                        .padding(40.dp)
+
+                )
+            }
+        },
     ) {
         TopAppBar(
             backgroundColor = Color.Blue,
             title = {
                 Text("What")
             },
-            navigationIcon =  {
+            navigationIcon = {
                 IconButton(
                     onClick = {}
                 ) {
@@ -77,7 +96,14 @@ fun ScaffLesson() {
                 IconButton(
                     onClick = {
                         coroutineScope.launch {
-                            snackbarHostState.showSnackbar("Нажался черт")
+                            val result = snackbarHostState.showSnackbar(
+                                message = "Нажался черт",
+                                actionLabel = "Undone"
+                            )
+                            // в условии обрабатывваем нажатие на actionLabel
+                            if(result == SnackbarResult.ActionPerformed) {
+                                Log.d("SnackbarResult", "SnackbarResult.ActionPerformed")
+                            }
                         }
                     }
                 ) {
@@ -92,6 +118,7 @@ fun ScaffLesson() {
     }
 }
 
+// BOT
 @Composable
 fun TabsTopBar() {
     val tabs = listOf("A", "B", "C")
@@ -120,12 +147,14 @@ fun TabsTopBar() {
             }
         }
     ) { paddingValues ->
-        Box(Modifier.padding(paddingValues).fillMaxSize()) {
+        Box(Modifier
+            .padding(paddingValues)
+            .fillMaxSize()) {
             Text("Выбрано: ${tabs[selected.value]}")
         }
     }
 }
-
+// BOT
 @Composable
 fun SearchTopBar() {
     var isSearching = remember { mutableStateOf(false) }
@@ -165,7 +194,9 @@ fun SearchTopBar() {
             )
         }
     ) { paddingValues ->
-        Box(Modifier.padding(paddingValues).fillMaxSize()) {
+        Box(Modifier
+            .padding(paddingValues)
+            .fillMaxSize()) {
             Text("Контент")
         }
     }
