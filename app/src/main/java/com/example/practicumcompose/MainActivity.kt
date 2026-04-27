@@ -19,9 +19,9 @@ class MainActivity : ComponentActivity() {
         setContent {
            // ColumnChart()
 
-            // WoundHealingScreen()
+          WoundHealingScreen()
 
-            WoundHealingChartScreen()
+            // WoundHealingChartScreen()
         }
     }
 
