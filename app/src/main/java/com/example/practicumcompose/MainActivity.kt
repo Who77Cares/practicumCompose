@@ -5,6 +5,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import com.example.practicumcompose.charts.ColumnChart
+import com.example.practicumcompose.charts.WoundHealingBarScreen
 import com.example.practicumcompose.charts.WoundHealingChartScreen
 import com.example.practicumcompose.charts.WoundHealingScreen
 
@@ -19,9 +20,11 @@ class MainActivity : ComponentActivity() {
         setContent {
            // ColumnChart()
 
-          WoundHealingScreen()
+         // WoundHealingScreen()
 
             // WoundHealingChartScreen()
+
+            WoundHealingBarScreen()
         }
     }
 
