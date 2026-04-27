@@ -70,4 +70,5 @@ dependencies {
 
     implementation("io.coil-kt:coil-compose:2.6.0")
 
+    implementation("com.patrykandpatrick.vico:compose:2.0.0")
 }
