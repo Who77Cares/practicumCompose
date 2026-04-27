@@ -5,6 +5,8 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import com.example.practicumcompose.charts.ColumnChart
+import com.example.practicumcompose.charts.WoundHealingChartScreen
+import com.example.practicumcompose.charts.WoundHealingScreen
 
 import com.example.practicumcompose.weather_lesson.WeatherApiScreen
 
@@ -15,7 +17,11 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
-            ColumnChart()
+           // ColumnChart()
+
+            // WoundHealingScreen()
+
+            WoundHealingChartScreen()
         }
     }
 
