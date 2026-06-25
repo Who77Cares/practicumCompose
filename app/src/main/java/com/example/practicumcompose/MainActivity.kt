@@ -8,6 +8,7 @@ import com.example.practicumcompose.charts.ColumnChart
 import com.example.practicumcompose.charts.WoundHealingBarScreen
 import com.example.practicumcompose.charts.WoundHealingChartScreen
 import com.example.practicumcompose.charts.WoundHealingScreen
+import com.example.practicumcompose.simpl_components.FabUI
 
 import com.example.practicumcompose.weather_lesson.WeatherApiScreen
 
@@ -24,7 +25,9 @@ class MainActivity : ComponentActivity() {
 
             // WoundHealingChartScreen()
 
-            WoundHealingBarScreen()
+          //  WoundHealingBarScreen()
+
+            FabUI()
         }
     }
 
