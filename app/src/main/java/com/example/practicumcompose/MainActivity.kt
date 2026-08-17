@@ -4,13 +4,7 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import com.example.practicumcompose.charts.ColumnChart
-import com.example.practicumcompose.charts.WoundHealingBarScreen
-import com.example.practicumcompose.charts.WoundHealingChartScreen
-import com.example.practicumcompose.charts.WoundHealingScreen
-import com.example.practicumcompose.simpl_components.FabUI
-
-import com.example.practicumcompose.weather_lesson.WeatherApiScreen
+import com.example.practicumcompose.base_anim_components.navigation_anim.NavGraph
 
 private val CITY_NAME_FOR_WEATHER_API = "Izhevsk"
 
@@ -26,8 +20,7 @@ class MainActivity : ComponentActivity() {
             // WoundHealingChartScreen()
 
           //  WoundHealingBarScreen()
-
-            FabUI()
+            NavGraph()
         }
     }
 
