@@ -17,21 +17,22 @@ object Routes {
 @Composable
 fun NavGraph() {
     val navController = rememberNavController()
+    val animation = NavAnimations.scaleFade
 
     NavHost(
         navController = navController,
         startDestination = Routes.SPLASH,
         enterTransition = {
-            NavAnimations.slideAnimation.enter
+            animation.enter
         },
         exitTransition = {
-            NavAnimations.slideAnimation.exit
+            animation.exit
         },
         popEnterTransition = {
-            NavAnimations.slideAnimation.popEnter
+            animation.popEnter
         },
         popExitTransition = {
-            NavAnimations.slideAnimation.popExit
+            animation.popExit
         }
     ) {
         composable(Routes.SPLASH) {
