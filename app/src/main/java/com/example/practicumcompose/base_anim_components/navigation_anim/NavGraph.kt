@@ -20,7 +20,19 @@ fun NavGraph() {
 
     NavHost(
         navController = navController,
-        startDestination = Routes.SPLASH
+        startDestination = Routes.SPLASH,
+        enterTransition = {
+            NavAnimations.slideAnimation.enter
+        },
+        exitTransition = {
+            NavAnimations.slideAnimation.exit
+        },
+        popEnterTransition = {
+            NavAnimations.slideAnimation.popEnter
+        },
+        popExitTransition = {
+            NavAnimations.slideAnimation.popExit
+        }
     ) {
         composable(Routes.SPLASH) {
             LaunchedEffect(Unit) {
@@ -34,11 +46,6 @@ fun NavGraph() {
 
         composable(
             route = Routes.MAIN_SCREEN,
-            enterTransition = { NavAnimations.slideAnimation.enter},
-            exitTransition = { NavAnimations.slideAnimation.exit},
-            popEnterTransition = { NavAnimations.slideAnimation.popEnter},
-            popExitTransition = { NavAnimations.slideAnimation.popExit}
-
         ) {
 
             MainScreen(
@@ -49,7 +56,11 @@ fun NavGraph() {
         }
 
         composable(Routes.SECOND_SCREEN) {
-            SecondScreen()
+            SecondScreen(
+                onBackClick = {
+                    navController.popBackStack()
+                }
+            )
         }
 
     }

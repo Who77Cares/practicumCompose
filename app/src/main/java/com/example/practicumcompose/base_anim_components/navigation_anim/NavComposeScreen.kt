@@ -43,12 +43,17 @@ fun MainScreen(
 }
 
 @Composable
-fun SecondScreen() {
+fun SecondScreen(
+    onBackClick: () -> Unit
+) {
     Box(
         modifier = Modifier.fillMaxSize().background(Color.Red.copy(alpha = 0.5f)),
         contentAlignment = Alignment.Center
     ) {
         Text(
+            modifier = Modifier.clickable {
+                onBackClick()
+            },
             text = "Second screen",
             fontSize = 25.sp
         )
