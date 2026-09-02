@@ -1,0 +1,37 @@
+
+------------------
+
+Основные сценария использования Lotti приведены в файле LottiAnim
+
+Тут укажем 2 сценария, которые не были рассмотрены в файле:
+
+а. Связь progress с состоянием приложения
+progress необязательно должен означать время анимации. Его можно связать, например, с загрузкой:
+LottieAnimation(
+    composition = composition,
+    progress = { downloadProgress }
+)
+Где downloadProgress находится в диапазоне 0f..1f. Также progress можно связать со свайпом, прокруткой или раскрытием элемента.
+
+------------------
+
+б. Динамические свойства
+   Через dynamicProperties можно без создания нового JSON менять:
+   - цвет элементов;
+   - прозрачность;
+   - текст;
+   - положение и размер слоёв;
+   - изображения.
+   Это особенно полезно для светлой/тёмной темы:
+   val properties = rememberLottieDynamicProperties(
+       rememberLottieDynamicProperty(
+           property = LottieProperty.COLOR,
+           value = color.toArgb(),
+           keyPath = arrayOf("Layer", "Shape", "Fill")
+       )
+   )
+   LottieAnimation(
+       composition = composition,
+       dynamicProperties = properties
+   )
+   Имена KeyPath должны совпадать со слоями внутри конкретного Lottie-файла

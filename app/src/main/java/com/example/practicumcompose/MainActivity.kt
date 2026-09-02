@@ -5,6 +5,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import com.example.practicumcompose.base_anim_components.navigation_anim.NavGraph
+import com.example.practicumcompose.complex_anim.lotti.AllLottiScreen
 
 private val CITY_NAME_FOR_WEATHER_API = "Izhevsk"
 
@@ -20,7 +21,9 @@ class MainActivity : ComponentActivity() {
             // WoundHealingChartScreen()
 
           //  WoundHealingBarScreen()
-            NavGraph()
+            // NavGraph()
+
+            AllLottiScreen()
         }
     }
 
