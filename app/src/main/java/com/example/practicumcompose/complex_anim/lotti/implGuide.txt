@@ -1,0 +1,12 @@
+1. Скачай анимацию
+Идёшь на lottiefiles.com, находишь любую анимацию, скачиваешь как .json.
+
+2. Положи файл в проект
+В Android Studio:
+•	правой кнопкой на res → New → Android Resource Directory
+•	тип raw
+•	кидаешь туда свой .json файл, например loading.json
+Путь будет: res/raw/loading.json
+
+3. Добавь зависимость
+implementation "com.airbnb.android:lottie-compose:6.4.0"
